@@ -1,0 +1,18 @@
+---
+description: Plain ASCII for new documents, code comments, and commit messages; non-ASCII only in an explicitly-named set of work rounds.
+alwaysApply: true
+---
+
+# ASCII-First -- plain ASCII for documents and commits
+
+**Seated:** `20260816.214652` on the maintainer's word. Canonical twin: `.claude/rules/ascii-first.md` (full form). Kin: `reds-first.mdc`, REDS %83.
+
+Write every new document, code comment, and commit message in **plain 7-bit ASCII**. A non-ASCII character no reader needs is a corruption waiting to compound -- ITINERARY.md silently triple-encoded into 2,797 runs of mojibake before it was caught (REDS %83).
+
+Substitute: em/en-dash -> `--`/`-`; middot -> `-`/`,`/`;`; curly quotes -> straight `'`/`"`; arrows -> `->`/`<-`/`<->`; ellipsis -> `...`; typographic minus (U+2212) -> `-`; Greek/subscripts in prose -> spelled (`gamma_2`, `sigma`).
+
+**Exception:** an explicitly-named set of work rounds where non-ASCII is the point (a Unicode module's fixtures, an i18n surface, a font codec's glyph tables). Name it in the round; keep it out of the operator card, commit subjects, and general prose.
+
+**Six guards stand**, all rostered in `construction/standing-equipment.kyri`: `living_card_ascii` (the operator card and the ledger, plus valid UTF-8 across every tracked text file), `ascii_document` (the rule rooms gated at zero, every other living `.md` on a falling ceiling), `ascii_comment` (Rye, shell and Rishi, Glow), `spoken_ascii` (what a Rishi guard says out loud -- the fourth subject, which the sentence above does not name), `rye_spoken_ascii` (what a **Rye** program prints, seated `20260908.214712` -- the same subject in the language this tree writes most of its own modules in, read by parenthesis depth because half of it sits on a `++` continuation line), and `rye_written_ascii` (what a Rye program ASSEMBLES into a buffer and hands onward, seated `20260911.215028` -- a `bufPrint`, `bufPrintZ`, `allocPrint` or `writeFile` region, since every meter before it read what a source comments or what a program prints and none read what it writes, which is the surface REDS %83 actually happened on; a ratchet over all 290 assembled characters and a WALL at zero over the two that reached a disk, both repaired on its seating lap). Full form and current readings: the Claude twin.
+
+**Never rewrite dated artifacts** to retrofit this (one-clock law, accrete-never-break); repairing a mojibake *corruption* is a fix, not a style rewrite.

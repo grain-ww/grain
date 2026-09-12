@@ -1,0 +1,169 @@
+# amphora_bounds_agree.rish -- shared Amphora bounds agree across module roofs.
+#
+# Path C (e146): leave every home as it is; prove agreement with a witness.
+# e147: also alias value groups (1024 under three names - 340 under two widths),
+#   membership read before agreement -- a group names members, and the elder
+#   reading counted const lines, so one member read twice passed for three.
+# e148: declared `/// couples:` markers -- coupling named, never inferred.
+# REDS `20260906.193823`: declared `/// covers:` markers -- an ORDER, expressed as coverage. The
+#   three readings above can each state only `A == B`, and the relations that
+#   decide whether Amphora refuses a pour are `A >= B`: a door must hold the
+#   name its record describes. Both instances reached their size check late.
+#   A declared relation lets the witness check that size before use.
+#
+# Planted pairs before totals are believed:
+#   same-name disagree MUST fail - same-name agree MUST pass
+#   alias disagree MUST fail - alias agree MUST pass
+#   an alias group missing a member MUST fail, naming who is missing
+#   couples disagree MUST fail - couples agree MUST pass
+#   covers short MUST fail - covers holding MUST pass
+#   a marker above a DERIVED bound MUST fail, naming marker_on_derived
+#   a marker whose partner is DERIVED MUST fail, naming partner_derived
+#   an UNSEATED same-name family diverging MUST fail - agreeing MUST pass
+#
+# REDS `20260907.123037`: a marker binds to the const BENEATH IT, whatever form
+#   its value takes. Reading only literal consts made the walk step over a
+#   derived bound and decide the relation against a stranger further down the
+#   file -- proven in a pen, a forty-byte roof declared to cover two hundred
+#   read `status=covers` and `verdict=ok` because an unrelated 8192 sat six
+#   lines below it. Ten of this family's bounds are derived, so the blind spot
+#   was the growing half. A partner that is present and derived now reads
+#   `partner_derived` rather than `partner_absent`: the const is spelled, and
+#   the repair is to spell its value or teach this reader arithmetic. The
+#   existing name already resolves.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/am/amphora_bounds_agree.rish
+
+let scan = "tools/fixtures/a/amphora_bounds_agree_scan.sh"
+let agree = "tools/fixtures/amphora_bounds_plants/agree"
+let disagree = "tools/fixtures/amphora_bounds_plants/disagree"
+let alias_agree = "tools/fixtures/amphora_bounds_plants/alias_agree"
+let alias_disagree = "tools/fixtures/amphora_bounds_plants/alias_disagree"
+let alias_incomplete = "tools/fixtures/amphora_bounds_plants/alias_incomplete"
+let couples_agree = "tools/fixtures/amphora_bounds_plants/couples_agree"
+let couples_disagree = "tools/fixtures/amphora_bounds_plants/couples_disagree"
+let covers_hold = "tools/fixtures/amphora_bounds_plants/covers_hold"
+let covers_short = "tools/fixtures/amphora_bounds_plants/covers_short"
+let covers_on_derived = "tools/fixtures/amphora_bounds_plants/covers_marker_on_derived"
+let covers_partner_derived = "tools/fixtures/amphora_bounds_plants/covers_partner_derived"
+let unseated_agree = "tools/fixtures/amphora_bounds_plants/unseated_agree"
+let unseated_diverge = "tools/fixtures/amphora_bounds_plants/unseated_diverge"
+
+let pos = run ["env" "AMPHORA_BOUNDS_ROOT=${disagree}" "sh" scan]
+assert (pos.ok == false) else "amphora_bounds_agree: disagree plant must FAIL -- ${pos.out} ${pos.err}"
+assert pos.out contains "verdict=misread" else "amphora_bounds_agree: disagree missing misread"
+assert pos.out contains "bound_max_cargo_status=diverge" else "amphora_bounds_agree: disagree must name diverge"
+say "plant_positive=honored"
+
+let neg = run ["env" "AMPHORA_BOUNDS_ROOT=${agree}" "sh" scan]
+assert neg.ok else "amphora_bounds_agree: agree plant must PASS -- ${neg.out} ${neg.err}"
+assert neg.out contains "verdict=ok" else "amphora_bounds_agree: agree missing ok"
+assert neg.out contains "bound_max_cargo_status=agree" else "amphora_bounds_agree: agree must name agree"
+say "plant_negative=honored"
+
+let apos = run ["env" "AMPHORA_BOUNDS_ROOT=${alias_disagree}" "sh" scan]
+assert (apos.ok == false) else "amphora_bounds_agree: alias disagree must FAIL -- ${apos.out} ${apos.err}"
+assert apos.out contains "alias_cargo_ceiling_status=diverge" else "alias disagree must name diverge"
+say "plant_alias_positive=honored"
+
+let aneg = run ["env" "AMPHORA_BOUNDS_ROOT=${alias_agree}" "sh" scan]
+assert aneg.ok else "amphora_bounds_agree: alias agree must PASS -- ${aneg.out} ${aneg.err}"
+assert aneg.out contains "alias_cargo_ceiling_status=agree" else "alias agree must name agree"
+assert aneg.out contains "alias_cargo_ceiling_membership=whole" else "an agreeing group names its membership whole"
+say "plant_alias_negative=honored"
+
+# A GROUP IS A CLAIM ABOUT MEMBERS, and the elder reading could not see its own
+# membership. It summed const LINES across the whole group, so one member declared
+# twice at one value answered `declarations=2 signatures=1 status=agree` with
+# `verdict=ok` and exit 0 -- the comparison made entirely out of reading (1)'s own
+# subject read twice, while the other two names stood nowhere in the room. This
+# plant is that shape, proven on metal before the repair. Membership and agreement
+# are two questions: `present` counts distinct names, `missing` names the rest, and
+# a group with one name present compares nothing across names.
+let ainc = run ["env" "AMPHORA_BOUNDS_ROOT=${alias_incomplete}" "sh" scan]
+assert (ainc.ok == false) else "amphora_bounds_agree: an incomplete alias group must FAIL -- ${ainc.out} ${ainc.err}"
+assert ainc.out contains "alias_cargo_ceiling_membership=incomplete" else "an incomplete group must name its membership"
+assert ainc.out contains "alias_cargo_ceiling_missing=max_seal_plain,max_cargo_bytes" else "the absent members must be named rather than counted"
+assert ainc.out contains "alias_cargo_ceiling_present=1" else "one distinct name present must read as one"
+assert (ainc.out contains "alias_cargo_ceiling_status=agree" == false) else "one member read twice must never be called agreement"
+say "plant_alias_incomplete=honored"
+
+let cpos = run ["env" "AMPHORA_BOUNDS_ROOT=${couples_disagree}" "sh" scan]
+assert (cpos.ok == false) else "amphora_bounds_agree: couples disagree must FAIL -- ${cpos.out} ${cpos.err}"
+assert cpos.out contains "couples_status=diverge" else "couples disagree must name diverge"
+say "plant_couples_positive=honored"
+
+let cneg = run ["env" "AMPHORA_BOUNDS_ROOT=${couples_agree}" "sh" scan]
+assert cneg.ok else "amphora_bounds_agree: couples agree must PASS -- ${cneg.out} ${cneg.err}"
+assert cneg.out contains "couples_status=agree" else "couples agree must name agree"
+say "plant_couples_negative=honored"
+
+# The short plant carries Amphora's own `20260906` numbers -- 200 covering 512
+# -- so the refusal this leg proves is the one the living tree actually had.
+let vpos = run ["env" "AMPHORA_BOUNDS_ROOT=${covers_short}" "sh" scan]
+assert (vpos.ok == false) else "amphora_bounds_agree: covers short must FAIL -- ${vpos.out} ${vpos.err}"
+assert vpos.out contains "covers_status=short" else "covers short must name short"
+assert vpos.out contains "_slack=-312" else "covers short must print the signed gap"
+say "plant_covers_positive=honored"
+
+let vneg = run ["env" "AMPHORA_BOUNDS_ROOT=${covers_hold}" "sh" scan]
+assert vneg.ok else "amphora_bounds_agree: covers holding must PASS -- ${vneg.out} ${vneg.err}"
+assert vneg.out contains "covers_status=hold" else "covers holding must name hold"
+say "plant_covers_negative=honored"
+
+# A marker whose subject is derived must be REFUSED rather than re-aimed. The
+# elder reader answered `verdict=ok` on this exact plant, having bound the
+# marker to the unrelated 8192 below -- so the leg proves the false green, not
+# merely the refusal.
+let dpos = run ["env" "AMPHORA_BOUNDS_ROOT=${covers_on_derived}" "sh" scan]
+assert (dpos.ok == false) else "amphora_bounds_agree: a marker on a derived bound must FAIL -- ${dpos.out} ${dpos.err}"
+assert dpos.out contains "cover_max_roof_to_b_max_partner_status=marker_on_derived" else "the marker must bind to max_roof and name it derived"
+assert (dpos.out contains "unrelated_large" == false) else "the marker must never reach the stranger below it"
+say "plant_marker_on_derived=honored"
+
+# A partner that exists and carries an expression is present, not absent.
+let ppos = run ["env" "AMPHORA_BOUNDS_ROOT=${covers_partner_derived}" "sh" scan]
+assert (ppos.ok == false) else "amphora_bounds_agree: a derived partner must FAIL -- ${ppos.out} ${ppos.err}"
+assert ppos.out contains "cover_max_roof_to_b_max_line_len_status=partner_derived" else "a spelled derived partner must read partner_derived"
+assert (ppos.out contains "partner_absent" == false) else "a present const must never be called absent"
+say "plant_partner_derived=honored"
+
+
+# A same-name family NO HAND SEATED. Reading (1) iterated a typed roster of
+# three names, so two roofs declaring one name at two numbers read GREEN
+# whenever nobody had typed that name into the scan -- proven by mutation on
+# this exact plant, which answers `verdict=ok` and exit 0 the moment the roster
+# stops being derived. The roster is the union of the seated three and every
+# identifier the room actually declares in two or more files, so the family
+# below is read on the lap it lands rather than on the lap somebody remembers.
+let upos = run ["env" "AMPHORA_BOUNDS_ROOT=${unseated_diverge}" "sh" scan]
+assert (upos.ok == false) else "amphora_bounds_agree: an unseated diverging family must FAIL -- ${upos.err}"
+assert upos.out contains "bound_max_frame_len_status=diverge" else "the unseated family must be read and named diverge"
+assert upos.out contains "same_name_unseated=max_frame_len" else "the unseated family must be named out loud"
+say "plant_unseated_positive=honored"
+
+let uneg = run ["env" "AMPHORA_BOUNDS_ROOT=${unseated_agree}" "sh" scan]
+assert uneg.ok else "amphora_bounds_agree: an unseated agreeing family must PASS -- ${uneg.err}"
+assert uneg.out contains "bound_max_frame_len_status=agree" else "the unseated agreeing family must read agree"
+assert uneg.out contains "same_name_unseated=max_frame_len" else "an agreeing unseated family is still named"
+say "plant_unseated_negative=honored"
+
+let living = run ["sh" scan]
+say living.out
+assert living.ok else "amphora_bounds_agree: living amphora must agree"
+assert living.out contains "verdict=ok" else "amphora_bounds_agree: living missing ok"
+assert living.out contains "same_name_seated=3" else "living seated roster"
+assert living.out contains "same_name_discovered=3" else "living derived roster"
+assert living.out contains "same_name_unseated=none" else "living room declares no family the seated roster misses"
+assert living.out contains "bound_max_vessel_len_status=agree" else "living max_vessel_len"
+assert living.out contains "bound_max_cargo_status=agree" else "living max_cargo"
+assert living.out contains "bound_digest_hex_len_status=agree" else "living digest_hex_len"
+assert living.out contains "alias_cargo_ceiling_status=agree" else "living cargo_ceiling alias"
+assert living.out contains "alias_cargo_ceiling_membership=whole" else "living cargo_ceiling names all three members"
+assert living.out contains "alias_datagram_membership=whole" else "living datagram names both members"
+assert living.out contains "alias_datagram_status=agree" else "living datagram alias"
+assert living.out contains "couples_status=agree" else "living couples must agree"
+assert living.out contains "covers_status=hold" else "living covers must hold"
+assert living.out contains "cover_max_manifest_name_len_to_main_max_season_name_len_status=covers" else "living season door must fit the listing"
+say "GREEN: amphora_bounds_agree -- derived same-name roster - alias membership and agreement - couples - covers - derived binding - thirteen planted pairs - no rename."

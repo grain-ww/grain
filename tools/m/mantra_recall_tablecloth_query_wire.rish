@@ -1,0 +1,56 @@
+# mantra_recall_tablecloth_query_wire.rish -- Tablecloth query over Comlink hosted wire.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_recall_tablecloth_query_wire.rish
+#
+# EVERY REFUSAL HERE CARRIES ITS TARGET'S OWN SENTENCE (`20260910.203444`, REDS %700). This witness
+# read red on one cold roster pass and green on a re-run minutes later over an unchanged tree, and
+# the evidence page could name only which LEG refused -- its five bindings each asserted on `.ok`
+# and mentioned neither `.out` nor `.err`, so the compiler's and the selftest's own words were
+# discarded inside the interpreter. Rishi interpolates a capture into an `assert ... else` message,
+# which costs nothing on the green path and is the whole difference between a flap a hand can
+# diagnose and one that can only be inferred. The two selftest runs fold stderr into stdout with
+# `2>&1`, so `.out` is the field carrying their reason; the builds keep theirs on `.err`. Counted
+# tree-wide as `unsaid_rostered` by `tools/fixtures/s/shim_reason_scan.sh`.
+
+let zig = "vendor/zig-toolchain/zig"
+let wire_bin = "mantra/bin/recall-tablecloth-query-wire"
+let delivery_bin = "mantra/bin/recall-tablecloth-query-delivery"
+
+let build_wire = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_tablecloth_query_wire.rye -femit-bin=${wire_bin}"]
+assert build_wire.ok else "tablecloth query wire build failed: ${build_wire.err}"
+
+let wire_selftest = run ["sh" "-c" "${wire_bin} selftest 2>&1"]
+assert wire_selftest.ok else "tablecloth query wire selftest exited non-zero: ${wire_selftest.out}"
+assert wire_selftest.out contains "GREEN" else "tablecloth query wire selftest not GREEN"
+
+let build_delivery = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_tablecloth_query_delivery.rye -lc -femit-bin=${delivery_bin}"]
+assert build_delivery.ok else "tablecloth query delivery build failed: ${build_delivery.err}"
+
+let delivery_selftest = run ["sh" "-c" "${delivery_bin} selftest 2>&1"]
+assert delivery_selftest.ok else "tablecloth query delivery selftest exited non-zero: ${delivery_selftest.out}"
+assert delivery_selftest.out contains "GREEN" else "tablecloth query delivery selftest not GREEN"
+
+# THE REFUSALS, PROVEN FROM THE FAILING SIDE. The delivery selftest now carries the answer-slot
+# budget: a request reserves the slot its reply will live in, so a caller keeping an answer is
+# charged for the bytes it keeps. A GREEN selftest alone cannot tell that reservation from a
+# ceiling nobody enforces, so the control breaks the module six ways in a pen and watches five of
+# them refuse -- with one unmutated leg, so a refusal stays tellable from a bypass.
+let pool_control = run ["sh" "tools/fixtures/m/mantra_tablecloth_answer_pool_control.sh"]
+assert pool_control.ok else "answer-slot budget control did not reach verdict=ok: ${pool_control.err}"
+assert pool_control.out contains "verdict=ok" else "answer-slot budget control verdict missing"
+assert pool_control.out contains "clean_exit=0" else "the unmutated pen refused, so no break below reads honestly"
+
+# THE LEG THAT RUNS THE SELFTEST BESIDE ITSELF. Every check above runs the delivery binary ONCE,
+# and the fault that made this witness flap was invisible to one run: the module spoke over two
+# port numbers written into the file, and a port is a name on the MACHINE rather than in a tree.
+# Eight checkouts stand on this pier, each running this witness every roster pass, so two of them
+# reaching port 38490 read each other's replies. Measured `20260911` at load 14, eight at once:
+# the elder binary 39 of 80 red, the repaired binary 0 of 80 -- and both 0 of 120 run serially,
+# which is why a fortnight of green passes never named it (REDS %700).
+let port_control = run ["sh" "tools/fixtures/m/mantra_delivery_port_control.sh"]
+assert port_control.ok else "delivery concurrency control did not reach verdict=ok: ${port_control.out}"
+assert port_control.out contains "clean_red=0" else "the delivery selftest refused beside itself: ${port_control.out}"
+assert port_control.out contains "verdict=ok" else "delivery concurrency control verdict missing"
+
+say "GREEN: Tablecloth query wire witness passed (encode + hosted Comlink filter + answer-slot budget + concurrent delivery)."
