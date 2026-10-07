@@ -1,0 +1,45 @@
+# Press -- what has been said publicly, and to whom
+
+**Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
+[`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - the whole
+path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
+
+*Every piece here was written once and kept exactly as filed. This page is their index and their honest scope, and the table below is the count.*
+
+**Language:** EN - **Style:** Bhakta at the Door setting, with Radiant warmth (see `../../context/BHAKTA_STYLE.md`)
+**Written:** `20260821.190149` - **Status:** Living - **Kind:** crushed index of [`../../press/`](../../press/)
+
+---
+
+| Stamp | Announcement | What it says |
+|---|---|---|
+| `20260301.000000` | The Aspiring Oregon Radiance | a vision for regeneration offered to a whole state -- the civic half of this project, written for people who will never read a line of its code |
+| `20260727.141213` | The the maintainer name | a name announced in gentle form |
+| `20260823.212410` | [MOX, and the answer that holds](../../press/20260823-212410_mox-and-the-answer-that-holds.md) | a Linengrow Magazine piece on the first named Mycelium instantiation -- an essay addressed outward rather than an announcement |
+| `20261003.235807` | [MUR, and the answer that holds](../../press/20261003-235807_mur-and-the-answer-that-holds.md) | the living outward telling: one shared history, one token, a balance a person can walk again |
+| `20260827.165527` | a fund founding | the founding of the public-benefit fund, in its own words -- filed as a **draft**, on its own head, until the Wyoming filing is accepted and counsel has read it |
+| `20260907.175821` | [The Radiator and the Wire](../../press/date/20260907/20260907-175821_the-radiator-and-the-wire-public.html) | a chip question for orbit, asked before a mass driver -- the first piece filed as a public HTML projection rather than Markdown, and the first to stand on a folded `date/` shelf |
+| `20260910.054448` | [Anywhere the Vortex Finds Us](../../press/20260910-054448_anywhere-the-vortex-finds-us.md) | a Door telling of a published finite-time-blowup result and the two mathematicians who reached it first -- **mixed room**, the result observation and the aether reading vision |
+| `20260910.054448` | [The Compression the Vortex Wraps](../../press/20260910-054448_the-compression-the-vortex-wraps.md) | the Field companion to the same material, carrying the elliptic pressure law and the mechanism at length |
+
+## The scope, stated plainly
+
+**What the room holds is what this page lists, and the table above is the count.** This room is thin on purpose: a press release is a thing you write when you have something to announce, and this project has had few such days. A press shelf padded to look busy would be the opposite of the honesty the rest of the tree keeps.
+
+**Announcements, a magazine piece, a public projection, and a paired telling.** The living magazine piece is the MUR essay. The elder MOX essay stays filed beside it. Each row names its own genre. This page said *three* for two weeks while four pieces stood in the room, and it argued the point at length in the paragraph above -- so the count moved out of the prose and into the table, where the room itself keeps it honest.
+That sentence outran itself by a genre: the tally left and the **breakdown** stayed, spelling four
+cardinals over a room of seven, and the abstract above still opened on a total. Both moved
+`20260912.001011`, the lap that found the front door carrying the same breakdown in its `press/` row.
+The genres keep every word -- what leaves is the number in front of each, which the table holds.
+
+**A piece may be filed as a page rather than as prose.** The Radiator essay landed `20260907` as a standalone HTML projection on a folded `date/` shelf, which is a second thing new at once: the room's first non-Markdown member, and its first member one directory deep. Both are ordinary under the fold law -- a shelf files a piece rather than retiring it -- and both are why the index needed a row rather than an argument. [`tools/cr/crushed_index_witness.rish`](../../tools/cr/crushed_index_witness.rish) reads this index against `press/` on every lap.
+
+**Dated and immutable.** Each piece stays exactly as filed. A later announcement may revise, soften, or supersede an earlier one -- both remain, neither is edited to match what came after.
+
+**Three rows above carry no link.** The Aspiring Oregon Radiance, the the maintainer name, and the a fund founding each name a person's own venture, name, or fund, so `template-manifest.kyri` withholds them from the public seed. This page ships in both the field and the seed, so a live link into one of those three would resolve in the field and break for the seed's reader -- named here in prose instead, exactly as the piece stays.
+
+**What would enter here:** an announcement addressed to people outside this tree, written to be read once and understood without context. Everything addressed to a reader who is already inside belongs in [`../../foundations/`](../../foundations/README.md) or the manual instead.
+
+---
+
+*May what is said publicly stay true long after the day it was said.*

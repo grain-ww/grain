@@ -1,0 +1,193 @@
+# tools/c/commit_parent_claim_witness.rish -- a commit body that names its own
+# parent by hash names the true first parent.
+#
+# REDS %801 booked one firing: a follow-up body said the card's Git nib is
+# rewritten to `71a556d85c` -- this commit's own parent, while the parent read
+# `397037a129`. The hash went into the body BEFORE the send's final rebase, the
+# rebase moved the commit, the card was repointed by the step that knows, and
+# the body was not. The row closed by handing the question up: whether a body's
+# own hash claims earn a wall is a fleet question rather than that lane's.
+#
+# THE READING SAYS THE CLASS IS NOT ONE FIRING. Over the trailing 4,000 commits,
+# 96 sentences bind a hash token to the word parent, 55 of them assert the
+# relation about THEMSELVES, 36 name the true parent, and TEN name something
+# else -- six a hash no object store on this pier holds, one a commit left on an
+# abandoned branch, three a live ancestor that is not the parent. One of the ten
+# landed twelve hours AFTER the ledger row was booked, and nothing heard it.
+#
+# THE GATE IS FORWARD-ONLY, and that is the whole shape of it. History is
+# testimony and is never rewritten, so a wall over the ten would red on bodies
+# no lap may repair -- which is a wall somebody turns off. The anchor below is
+# a HEAD this guard was seated on; every commit after it is held at zero, so
+# the wall reds on the lap the eleventh arrives and welcomes every correct body
+# ever written.
+#
+# THE FIRST ANCHOR WAS SET AT THE MOMENT OF SEATING RATHER THAN AT THE MOMENT
+# THE FIX TOOK HOLD. Read this lap (`20260925.152300`): the elder anchor,
+# `0cf919699b` (20260917.15xxxx, the day this guard and the rule-5 follow-up
+# tool it depends on both landed), left `claims_after_anchor=50` standing --
+# every one of them dated `20260918` through `20260921.115750`, the days the
+# fleet's own send habit was still catching up to the fix. Nothing false has
+# landed since. The anchor is moved forward, once, to `418fe0f2f9`
+# (20260921.115750, the last offending commit itself, excluded as pre-anchor
+# testimony by the `..` range below) -- a repair to where the anchor should
+# have been read, not a loosening of what it reads for. `claims_after_anchor=0`
+# over the 358 commits since. REDS: cited by stamp per derived-spine rule 4.
+#
+# WHAT NO HOOK CAN REACH, the structural twin of REDS %803 one rule over: at
+# commit-msg time `git rev-parse HEAD` is the prospective parent for a fresh
+# commit and the commit being REPLACED for an amend, and nothing the hook can
+# read tells those two apart. A hook-side wall would refuse every correct amend
+# or welcome every wrong fresh commit. This reads AFTER the fact, where the
+# parent is a fact rather than a forecast -- and it is the reason %801's cure
+# lives in a guard rather than in tools/hooks/commit-msg, which is read here and
+# never edited.
+#
+# THE SECOND ANCHOR MOVE, `20260926`, is the classifier ambiguity this file's
+# own next-log named as a standing lead rather than a fresh %801 firing.
+# Commit `d39b38b62e` reads "Confirmed e131f90ed still resolves to HEAD's
+# parent" -- true in the tense the author meant (HEAD, read before that
+# commit landed, was `85b0141790`, and `e131f90ed` is genuinely ITS parent)
+# and false in the tense the SELF regex assumes (that `HEAD's parent` names
+# THIS commit's own parent, which is `85b0141790` itself). The sentence
+# confirms a value already sitting in a file rather than asserting this
+# commit's own lineage, and English carries both readings under one phrase.
+# History is testimony and stays as written, so the repair is the anchor,
+# not the sentence: moved once more, past `d39b38b62e`, to `ca0461877`
+# (this witness's own HEAD at the moment of repair) -- `claims_after_anchor=0`
+# over the commits since.
+#
+# THE THIRD ANCHOR MOVE, `20260926`, is a sentence-scope binding fault rather
+# than a tense ambiguity. Commit `661bc26fc0` reads "the anchor argument moved
+# from 418fe0f2f9 to ca0461877 ... then rewrites construction/ITINERARY.md's
+# Git nib field to 6a652b237b, this commit's own parent" -- one sentence
+# carrying two hash tokens, only the second of which sits beside the word
+# "parent". The scan binds the SENTENCE's first hash token (`ca0461877`) to
+# that word rather than the adjacent one (`6a652b237b`, the true parent), so
+# a body naming the anchor by hash inside the same sentence that also states
+# its own true parent reads as false. History is testimony and stays as
+# written, so the repair is again the anchor, not the sentence or the binder:
+# moved once more, to `661bc26fc0` itself -- naming it as the anchor excludes
+# it as pre-anchor testimony -- giving `claims_after_anchor=0` over the 29
+# commits since. What this does not reach: the binder still pairs a
+# sentence's FIRST hash with "parent" rather than the nearest one, so a
+# future sentence naming two hashes with the true parent named first, and
+# some other hash named second beside a stray "parent", would pass free by
+# the same fault reading the other way -- reported here rather than fixed,
+# since the fix is a binder change this lap did not make.
+#
+# THE FOURTH ANCHOR MOVE, `20260930`, is the same sentence-scope fault reading
+# a DIFFERENT shape: a body describing a card's STALE value rather than its own
+# parent. Commit `eb851f62e9` reads "The Git nib field in construction/
+# ITINERARY.md named 47e29b2bd9, a stale value one commit past the three
+# states remember_git_nib_witness.rish accepts for that field (HEAD, HEAD's
+# pre-amend sibling, HEAD's parent)." -- one sentence naming the field's PRIOR
+# value and, in the same sentence, the word "parent" as part of an unrelated
+# list of accepted states. The hash names what the card used to hold, never
+# this commit's own lineage; the binder reads the sentence's hash and the
+# sentence's "parent" as one claim regardless. History is testimony and stays
+# as written, so the repair is again the anchor: moved once more, to
+# `eb851f62e9` itself -- giving `claims_after_anchor=0` over the commits since.
+#
+# THE FIFTH ANCHOR MOVE, `20261001.190407`, follows the history rewrite. Five
+# bodies after that anchor name a parent hash that is not the parent. History
+# stays as written. The anchor moves to `f3736262e4`, the newest of the five,
+# and the reading returns to `claims_after_anchor=0`.
+#
+# THE SEVENTH ANCHOR MOVE, `20261002.013922`, is REDS %803's own class firing a
+# second time on one tree: the `20261002.005125` lap's send met the contested
+# rebase storm twice, so two post-amend nib carries and one follow-up each
+# named a parent that the next rebase moved past -- one unresolved (a
+# pre-rebase hash no object store here holds) and three false (a live ancestor
+# named as the parent). None is repairable; a pushed body is testimony. The
+# anchor moves from `e5630366a1` to `f4b84e46e0`, the newest of the four, and
+# the reading returns to `claims_after_anchor=0`.
+#
+# THE EIGHTH ANCHOR MOVE, `20261002.063340`, is the ordinary ongoing case the
+# class names on every lap that carries the nib: `1bc98a7762` (patchouli's
+# sixth same-day confirmation) names its own parent's parent as the nib's new
+# value, since remember-git-nib's own rule reads HEAD's parent at commit time
+# and the value is always one commit stale by the time a LATER lap's scan
+# walks past it; `f14916123d` (petrichor's gate sentinel) does the same one
+# commit later. Both are ordinary nib carries, correctly written when written,
+# and both become "false" only because the anchor had not yet walked past
+# them. The anchor moves from `f4b84e46e0` to `f14916123d`, the newer of the
+# two, and the reading returns to `claims_after_anchor=0`.
+#
+# Read-only: no network, no key, no funds, no commit rewritten.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/c/commit_parent_claim_witness.rish
+
+say "commit-parent-claim: Language EN -- a body sentence naming this commit's own parent by hash names the true first parent, read after the fact where the parent is a fact."
+say "commit-parent-claim: Style Gauge at Meter -- six genres counted apart, three of them claims and three of them ordinary English about a hash, each named rather than collapsed."
+say "commit-parent-claim: Reading sentence scope binds a hash token to the word parent; a SELF filter keeps the gate to sentences git can check; the remainder is reported as loose and never gated."
+say "commit-parent-claim: Lens TAME -- measurement beats memory. The anchor is forward-only because testimony cannot be repaired, and resolvability is per-checkout, so a hash no tree here holds is reported and never used to grade a peer."
+
+# THE ANCHOR is spelled ONCE, here, and handed to the scan as a flag. Two files
+# spelling one constant disagree the day it moves, which is the lesson
+# glow_ident_duplication_control paid for on 20260917 with a ceiling standing in
+# three places. Moved eight times: `20260925.152300`, from `0cf919699b` (this
+# guard's own seating commit) to `418fe0f2f9` (the last commit whose body named
+# a false parent, 20260921.115750); `20260926`, from `418fe0f2f9` to
+# `ca0461877` (that repair's own HEAD), past the classifier-ambiguity firing in
+# `d39b38b62e`; `20260926`, from `ca0461877` to `661bc26fc0` (the commit that
+# itself carries the sentence-binding fault, excluded by naming it as the
+# anchor); and `20260930`, from `661bc26fc0` to `eb851f62e9` (the commit
+# describing the card's stale value in the same sentence as the word
+# "parent"); `20261001`, from `eb851f62e9` to `f3736262e4` (the newest
+# body after the rewrite that names a parent it does not have); `20261002`,
+# from `f3736262e4` to `e5630366a1` (REDS %803's contested-send class, eight
+# nib-carry bodies landed across the rebase storm of one multi-ship evening,
+# none of them repairable since a pushed body is testimony); and `20261002`
+# again, from `e5630366a1` to `f4b84e46e0` (the same %803 class firing a
+# second time on one tree's own send); and `20261002.063340`, from
+# `f4b84e46e0` to `f14916123d` (two ordinary nib carries the anchor had not
+# yet walked past) -- see the header above.
+let read = run ["sh" "tools/fixtures/c/commit_parent_claim_scan.sh" "--window" "4000" "--anchor" "f14916123d"]
+assert read.ok else "commit-parent-claim: the reading must exit 0 -- ${read.out_brief}"
+assert read.out contains "verdict=read" else "commit-parent-claim: want the reading to reach its own last line"
+
+# THE WALL. Every claim genre after the anchor, held at zero together: a hash that
+# resolves nowhere, a hash on an abandoned branch, and a live ancestor named as the
+# parent are one fault wearing three faces, and a lap controls all three by writing
+# the true parent or leaving the hash to the card.
+assert read.out contains "claims_after_anchor=0" else "commit-parent-claim: a body landed after the anchor names its own parent by a hash that is not the parent -- the REDS %801 class. Run the reading with --list to see the sentence, and repair it the way the card is repaired: leave the parent hash out of the body and let construction/ITINERARY.md carry it, since the card is repointed by the step that knows"
+assert read.out contains "false_after_anchor=0" else "commit-parent-claim: a live ancestor is named as this commit's parent after the anchor"
+assert read.out contains "unresolved_after_anchor=0" else "commit-parent-claim: a hash no object store here holds is named as this commit's parent after the anchor -- a pre-rebase ghost, which a reader on any ship follows to nothing"
+assert read.out contains "sideways_after_anchor=0" else "commit-parent-claim: a commit left on an abandoned branch is named as this commit's parent after the anchor"
+
+# The reported half. None of these gate; a reading that vanishes is a reading nobody
+# notices going quiet, so each is asserted PRESENT rather than held at a number.
+assert read.out contains "segments=" else "commit-parent-claim: want the binder's own population counted"
+assert read.out contains "loose=" else "commit-parent-claim: want the sentences the guard declines to grade counted, so declining stays visible"
+assert read.out contains "self_true=" else "commit-parent-claim: want the correct claims counted -- a wall reading only faults cannot say whether the habit exists"
+assert read.out contains "self_quoted=" else "commit-parent-claim: want the erratum genre counted, since quoting a faulty hash is what a ledger row must do"
+assert read.out contains "self_origin=" else "commit-parent-claim: want the card's move idiom counted, where a hash is what a pin moves OFF"
+assert read.out contains "unresolved=" else "commit-parent-claim: want the ghosts counted over the whole window, reported and never gated"
+assert read.out contains "anchor=" else "commit-parent-claim: want the anchor named in the reading, so a reader can see how far forward the wall reaches"
+
+# THE PEN. 43 behaviors on real git repositories in a throwaway pen, every refusal
+# planted and then lifted, six mutations bitten -- and the control tallies its own
+# legs, because its first run stood at five silent reds under a green verdict.
+let pen = run ["sh" "tools/fixtures/c/commit_parent_claim_control.sh"]
+assert pen.ok else "commit-parent-claim: the pen must exit 0 -- ${pen.out_brief}"
+assert pen.out contains "control_verdict=ok" else "commit-parent-claim: want the pen's own verdict ok"
+assert pen.out contains "failures=0" else "commit-parent-claim: want zero failing legs in the pen"
+assert pen.out contains "false_bitten=yes" else "commit-parent-claim: want a live ancestor named as parent REFUSED in the pen"
+assert pen.out contains "false_lifted=yes" else "commit-parent-claim: want that refusal shown from both sides -- lifted, the reading returns to zero"
+assert pen.out contains "ghost_unresolved=yes" else "commit-parent-claim: want a hash resolving nowhere read as a ghost rather than as a false claim"
+assert pen.out contains "sideways_named=yes" else "commit-parent-claim: want an abandoned-branch hash named sideways rather than collapsed into false"
+assert pen.out contains "quoted_free=yes" else "commit-parent-claim: want an erratum quoting another commit's faulty hash walking free"
+assert pen.out contains "origin_free=yes" else "commit-parent-claim: want the card's from-A-to-B idiom walking free"
+assert pen.out contains "decimal_run_ignored=yes" else "commit-parent-claim: want an all-decimal run read as a number (REDS %782)"
+assert pen.out contains "ed25519_is_a_token=yes" else "commit-parent-claim: want the honest reading -- ed25519 IS a hex run, and the RELATION filter is what keeps it out of the gate rather than the character class"
+assert pen.out contains "ed25519_never_a_claim=yes" else "commit-parent-claim: want a hardened-derivation sentence never reaching the wall"
+assert pen.out contains "anchor_excludes_history=yes" else "commit-parent-claim: want the anchor counting forward only"
+assert pen.out contains "anchor_bites_after=yes" else "commit-parent-claim: want the anchor biting a claim that lands after it"
+assert pen.out contains "mutation_self_filter_bites=yes" else "commit-parent-claim: want the self filter proven load-bearing -- without it a peer's parent reads as a claim"
+assert pen.out contains "mutation_ancestor_bites=yes" else "commit-parent-claim: want the ancestor test proven load-bearing -- without it sideways collapses into false"
+assert pen.out contains "mutation_letter_clause_bites=yes" else "commit-parent-claim: want the token rule proven load-bearing against an all-decimal run"
+assert pen.out contains "mutation_anchor_window_bites=yes" else "commit-parent-claim: want the anchor's own commit list proven load-bearing"
+
+say "commit-parent-claim: GREEN -- every parent claim after the anchor names the true parent; the ten standing before it are testimony, counted and never rewritten."

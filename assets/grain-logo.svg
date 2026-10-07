@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="Grain -- a charcoal band on a black field">
+  <title>Grain</title>
+  <desc>A square black field with one horizontal band of #111111. In a 256 field the band begins at 56 and stands 144 tall, the same proportion as the 1920 source: 420 of black, 1080 of charcoal, 420 of black.</desc>
+  <rect width="256" height="256" fill="#000000"/>
+  <rect y="56" width="256" height="144" fill="#111111"/>
+</svg>

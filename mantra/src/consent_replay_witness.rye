@@ -1,0 +1,236 @@
+//! mantra/src/consent_replay_witness.rye -- grant, then revoke, and the grant remains.
+//!
+//! The orphaned revoke is attempted twice: once against an empty log, and once against an
+//! admitted grant whose id it does not name. Both refuse before the revoke slot is written.
+//!
+//! Case 8 of the consent contract -- an incomplete fact, or a false signature, refuses by that
+//! field's own name before either slot is written. Every required text field is emptied one at a
+//! time, on both the grant and the revoke, and a changed signature is tried on each fact in turn.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const consent = @import("consent_replay.rye");
+
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(consent).@"struct".decls) |decl| {
+        _ = &@field(consent, decl.name);
+    }
+}
+
+fn grant_fixture() consent.ConsentGrantFact {
+    return .{
+        .schema = consent.grant_schema,
+        .grant_id = "consent:sample-pollinator-counts:grant-1",
+        .receipt_id = "receipt:sample-pollinator-counts:20260912",
+        .holder_id = "person:sample-holder",
+        .recipient_id = "org:sample-steward",
+        .scope = "habitat-planning-read-only",
+        .granted_at = "20260912.130000-0400",
+        .signer_id = "person:sample-holder",
+        .signature = "fixture-signature-v1",
+    };
+}
+
+fn revoke_fixture() consent.ConsentRevokeFact {
+    return .{
+        .schema = consent.revoke_schema,
+        .revoke_id = "consent:sample-pollinator-counts:revoke-1",
+        .grant_id = "consent:sample-pollinator-counts:grant-1",
+        .holder_id = "person:sample-holder",
+        .revoked_at = "20260915.090000-0400",
+        .signer_id = "person:sample-holder",
+        .signature = "fixture-signature-v2",
+    };
+}
+
+fn orphan_against_empty() void {
+    var log: consent.Log = .{};
+    const revoked = log.append_revoke(revoke_fixture(), true);
+    // invariant: an empty log refuses the revoke.
+    assert(std.meta.isError(revoked));
+    assert(revoked == consent.ConsentError.OrphanedRevoke);
+    // invariant: the refusal writes neither slot.
+    assert(log.grant == null);
+    assert(log.revoke == null);
+}
+
+fn empty_holder_id() void {
+    var log: consent.Log = .{};
+    var fact = grant_fixture();
+    fact.holder_id = "";
+    const refused = log.refusal_grant(fact, true).?;
+    // invariant: an empty holder id refuses by that field's own name.
+    assert(std.mem.eql(u8, refused.field, "holder_id"));
+    assert(refused.reason == .empty);
+    const admitted = log.append_grant(fact, true);
+    // invariant: the empty holder id writes neither slot.
+    assert(std.meta.isError(admitted));
+    assert(admitted == consent.ConsentError.Empty);
+    assert(log.grant == null);
+    assert(log.revoke == null);
+}
+
+fn empty_receipt_id() void {
+    var log: consent.Log = .{};
+    var fact = grant_fixture();
+    fact.receipt_id = "";
+    const refused = log.refusal_grant(fact, true).?;
+    // invariant: an empty receipt id refuses by that field's own name.
+    assert(std.mem.eql(u8, refused.field, "receipt_id"));
+    assert(refused.reason == .empty);
+    const admitted = log.append_grant(fact, true);
+    // invariant: the empty receipt id writes neither slot.
+    assert(std.meta.isError(admitted));
+    assert(admitted == consent.ConsentError.Empty);
+    assert(log.grant == null);
+    assert(log.revoke == null);
+}
+
+fn empty_grant_id() void {
+    var log: consent.Log = .{};
+    var fact = grant_fixture();
+    fact.grant_id = "";
+    const refused = log.refusal_grant(fact, true).?;
+    // invariant: an empty grant id refuses by that field's own name.
+    assert(std.mem.eql(u8, refused.field, "grant_id"));
+    assert(refused.reason == .empty);
+    const admitted = log.append_grant(fact, true);
+    // invariant: the empty grant writes neither slot.
+    assert(std.meta.isError(admitted));
+    assert(admitted == consent.ConsentError.Empty);
+    assert(log.grant == null);
+    assert(log.revoke == null);
+}
+
+fn holder_mismatch() void {
+    var log: consent.Log = .{};
+    const grant = grant_fixture();
+    log.append_grant(grant, true) catch unreachable;
+    var other = revoke_fixture();
+    other.holder_id = "person:sample-other";
+    const refused = log.refusal_revoke(other, true).?;
+    // invariant: the refusal names the holder field and the mismatch reason.
+    assert(std.mem.eql(u8, refused.field, "holder_id"));
+    assert(refused.reason == .holder_mismatch);
+    const revoked = log.append_revoke(other, true);
+    // invariant: the mismatched holder writes nothing and leaves the admitted grant.
+    assert(std.meta.isError(revoked));
+    assert(revoked == consent.ConsentError.HolderMismatch);
+    assert(log.revoke == null);
+    assert(consent.grant_eql(log.grant.?, grant));
+}
+
+fn orphan_against_other_grant() void {
+    var log: consent.Log = .{};
+    const grant = grant_fixture();
+    log.append_grant(grant, true) catch unreachable;
+    var other = revoke_fixture();
+    other.grant_id = "consent:sample-pollinator-counts:grant-missing";
+    const revoked = log.append_revoke(other, true);
+    // invariant: a revoke naming another grant refuses.
+    assert(std.meta.isError(revoked));
+    assert(revoked == consent.ConsentError.OrphanedRevoke);
+    // invariant: the admitted grant is the one the log still holds.
+    assert(log.revoke == null);
+    assert(consent.grant_eql(log.grant.?, grant));
+}
+
+/// Every required text field this grant publishes, emptied one at a time, refuses
+/// by that field's own name and writes nothing.
+fn grant_required_field_refusals() void {
+    const names = [_][]const u8{
+        "grant_id", "receipt_id", "holder_id", "recipient_id",
+        "scope", "granted_at", "signer_id", "signature",
+    };
+    for (names) |name| {
+        var bad = grant_fixture();
+        if (std.mem.eql(u8, name, "grant_id")) bad.grant_id = "" else if (std.mem.eql(u8, name, "receipt_id")) bad.receipt_id = "" else if (std.mem.eql(u8, name, "holder_id")) bad.holder_id = "" else if (std.mem.eql(u8, name, "recipient_id")) bad.recipient_id = "" else if (std.mem.eql(u8, name, "scope")) bad.scope = "" else if (std.mem.eql(u8, name, "granted_at")) bad.granted_at = "" else if (std.mem.eql(u8, name, "signer_id")) bad.signer_id = "" else if (std.mem.eql(u8, name, "signature")) bad.signature = "";
+        var log: consent.Log = .{};
+        const refused = log.refusal_grant(bad, true).?;
+        // invariant: an emptied field refuses by its own name and the empty reason.
+        assert(std.mem.eql(u8, refused.field, name));
+        assert(refused.reason == .empty);
+        const appended = log.append_grant(bad, true);
+        // invariant: the refused append writes neither slot.
+        assert(std.meta.isError(appended));
+        assert(appended == consent.ConsentError.Empty);
+        assert(log.grant == null);
+    }
+}
+
+/// Every required text field this revoke publishes apart from `grant_id` (whose
+/// own emptying trips the relationship check first), emptied one at a time,
+/// refuses against an already-admitted grant and writes nothing.
+fn revoke_required_field_refusals() void {
+    const names = [_][]const u8{ "revoke_id", "holder_id", "revoked_at", "signer_id", "signature" };
+    for (names) |name| {
+        var log: consent.Log = .{};
+        const grant = grant_fixture();
+        log.append_grant(grant, true) catch unreachable;
+        var bad = revoke_fixture();
+        if (std.mem.eql(u8, name, "revoke_id")) bad.revoke_id = "" else if (std.mem.eql(u8, name, "holder_id")) bad.holder_id = "" else if (std.mem.eql(u8, name, "revoked_at")) bad.revoked_at = "" else if (std.mem.eql(u8, name, "signer_id")) bad.signer_id = "" else if (std.mem.eql(u8, name, "signature")) bad.signature = "";
+        const refused = log.refusal_revoke(bad, true).?;
+        // invariant: an emptied field refuses by its own name and the empty reason.
+        assert(std.mem.eql(u8, refused.field, name));
+        assert(refused.reason == .empty);
+        const appended = log.append_revoke(bad, true);
+        // invariant: the refused append writes neither the revoke slot nor the admitted grant.
+        assert(std.meta.isError(appended));
+        assert(appended == consent.ConsentError.Empty);
+        assert(log.revoke == null);
+        assert(consent.grant_eql(log.grant.?, grant));
+    }
+}
+
+/// A changed signature refuses on either fact, false authority rather than an
+/// empty field -- the contract's own second half of case 8.
+fn false_signature_refusals() void {
+    var grant_log: consent.Log = .{};
+    const grant_refused = grant_log.append_grant(grant_fixture(), false);
+    // invariant: an invalid grant signature refuses and writes nothing.
+    assert(std.meta.isError(grant_refused));
+    assert(grant_refused == consent.ConsentError.InvalidSignature);
+    assert(grant_log.grant == null);
+
+    var revoke_log: consent.Log = .{};
+    const grant = grant_fixture();
+    revoke_log.append_grant(grant, true) catch unreachable;
+    const revoke_refused = revoke_log.append_revoke(revoke_fixture(), false);
+    // invariant: an invalid revoke signature refuses, leaving the admitted grant whole.
+    assert(std.meta.isError(revoke_refused));
+    assert(revoke_refused == consent.ConsentError.InvalidSignature);
+    assert(revoke_log.revoke == null);
+    assert(consent.grant_eql(revoke_log.grant.?, grant));
+}
+
+pub fn main() void {
+    orphan_against_empty();
+    orphan_against_other_grant();
+    holder_mismatch();
+    empty_grant_id();
+    empty_receipt_id();
+    empty_holder_id();
+    grant_required_field_refusals();
+    revoke_required_field_refusals();
+    false_signature_refusals();
+    var log: consent.Log = .{};
+    const grant = grant_fixture();
+    log.append_grant(grant, true) catch unreachable;
+    const granted = log.replay() catch unreachable;
+    // invariant: a lone grant replays as granted.
+    assert(granted.status == consent.Status.granted);
+    assert(granted.revoke == null);
+    // invariant: the replayed grant matches the admitted fixture.
+    assert(consent.grant_eql(granted.grant, grant));
+    log.append_revoke(revoke_fixture(), true) catch unreachable;
+    const revoked = log.replay() catch unreachable;
+    // invariant: the revoke changes the status and leaves the grant.
+    assert(revoked.status == consent.Status.revoked);
+    // invariant: the grant after the revoke matches the grant before it.
+    assert(consent.grant_eql(revoked.grant, grant));
+    assert(revoked.revoke != null);
+    print("GREEN: consent replay -- grant, then revoke; a mismatched holder, an incomplete fact, or a false signature each writes nothing.\n", .{});
+}
