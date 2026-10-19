@@ -1,0 +1,27 @@
+# tools/gen/chapter/prin_ticker_witness.rish -- the Prin verse ticker, proven from both sides.
+#
+#   rishi/bin/rishi run tools/gen/chapter/prin_ticker_witness.rish
+#
+# Holds tools/gen/chapter/prin_ticker.rish, the thin hand that shows the Prin verse ticker. The
+# ticker's slide and scroll modes loop forever, so this witness proves only the `once` path and
+# the empty-set refusal, through tools/fixtures/p/prin_ticker_control.sh. The control plants a
+# comments-only verse file (refused, exit 1), a one-line file (welcomed as 1/1), and then reads the
+# live verse file (welcomed). A control that only printed numbers would pass here, so the witness
+# asserts each named leg and the control's own verdict, not the exit alone. The chapter hand itself
+# is checked only for delegation, since its default slide mode loops and cannot be run to an end.
+
+say "prin-ticker: the once mode refuses an empty verse set and welcomes a planted line and the live file."
+
+let control = run ["sh" "tools/fixtures/p/prin_ticker_control.sh"]
+assert control.ok else "prin-ticker: control run failed -- read tools/fixtures/p/prin_ticker_control.sh"
+assert control.out contains "leg=refuses_empty_verse exit=1 verdict=as_named" else "prin-ticker: an empty verse set was not refused"
+assert control.out contains "leg=welcomes_one_planted_line exit=0 verdict=as_named" else "prin-ticker: a planted verse line was not welcomed"
+assert control.out contains "leg=live_verse_once exit=0 verdict=as_named" else "prin-ticker: the live verse file did not show once"
+assert control.out contains "control_verdict=ok" else "prin-ticker: control verdict is not ok"
+
+# The hand itself is not run here, since its default slide mode loops forever. What it promises is
+# delegation: it must still hand its mode to the script the control proves.
+let delegates = run ["grep" "-qF" "tools/fixtures/p/prin_ticker.sh" "tools/gen/chapter/prin_ticker.rish"]
+assert delegates.ok else "prin-ticker: the hand no longer delegates to tools/fixtures/p/prin_ticker.sh"
+
+say "GREEN: prin-ticker -- the once mode refuses the empty set and welcomes the planted and live verse files."

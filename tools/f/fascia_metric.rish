@@ -1,0 +1,5 @@
+# tools/f/fascia_metric.rish -- accrete shim -> tools/gen/chapter/fascia_metric.rish
+let cmd = flatten [ ["rishi/bin/rishi" "run" "tools/gen/chapter/fascia_metric.rish"] args ]
+let r = run cmd
+if r.out != "" then say r.out
+exit r.code

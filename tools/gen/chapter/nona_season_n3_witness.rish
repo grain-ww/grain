@@ -1,0 +1,29 @@
+# tools/gen/chapter/nona_season_n3_witness.rish -- Nona handback return_surface_p41.
+#
+#   rishi/bin/rishi run tools/gen/chapter/nona_season_n3_witness.rish
+
+say "nona-season-n3: Language EN — handback return_surface_p41."
+say "nona-season-n3: Style Radiant — pause nona · open sept."
+say "nona-season-n3: Lens TAME — Nona Chapter n3."
+
+let handback = run ["test" "-f" "counsel/date/20260729/20260729-131327_nona-handback-return-surface-p41.md"]
+assert handback.ok else "nona-season-n3: handback counsel missing"
+
+# Surface opened right after this handback and has since progressed and paused again (p58,
+# handed into deca) -- a phase it was always going to leave. The rung reads the chapter's
+# presence on the card rather than the one status word it wore the day this witness was born
+# (REDS %292 -- an unrostered witness pinned to a passing state; see oven_season_o0 for the
+# same repair).
+let scope = run ["sh" "-c" "grep -q 'sept:   Surface Chapter' tools/gen/chapter/prin_scope.rish && grep -q 'nona:  Nona Chapter — PAUSED' tools/gen/chapter/prin_scope.rish && grep -q 'return_surface_p41' tools/gen/chapter/prin_scope.rish && grep -q 'return_generator_s9' tools/gen/chapter/prin_scope.rish && echo SCOPE_OK"]
+assert scope.ok else "nona-season-n3: prin_scope pin scan failed"
+assert scope.out contains "SCOPE_OK" else "nona-season-n3: sept present · nona PAUSED incomplete"
+
+# The LEXICON separator moved from a middot to a hyphen under ASCII-first (REDS %83), the same
+# sweep nona_season_n2's own LEXICON check already reads in hyphen form; and Surface's own
+# LEXICON row has since read PAUSED rather than OPEN for the same reason prin_scope does above.
+let lex = run ["sh" "-c" "grep -q 'The Surface Chapter' context/LEXICON.md && grep -q 'The Nona Chapter' context/LEXICON.md && grep -q '\*\*PAUSED\*\* - n3 complete' context/LEXICON.md && echo LEX_OK"]
+assert lex.ok else "nona-season-n3: lexicon scan failed"
+assert lex.out contains "LEX_OK" else "nona-season-n3: LEXICON Surface/Nona status incomplete"
+
+say "GREEN: nona-season-n3 — return_surface_p41 · Surface OPEN · Nona PAUSED"
+say "GREEN: nona-season-n3 — nest accuracy · SDD · residual stay living."

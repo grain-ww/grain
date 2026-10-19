@@ -1,0 +1,39 @@
+# tools/t/tally_kumara_refusal_witness.rish -- the checked sign door refuses a mismatched pair as a value.
+#
+# The legacy `kumara.sign` aborts on a mismatched key pair (`catch unreachable`), reproduced on metal
+# by a probe at .lap/kumara_probe (exit 134, panic: KeyMismatch). This witness proves the additive
+# `sign_checked` door: a matched pair signs and verifies, and a mismatched pair returns KeyMismatch.
+# The legacy `sign` keeps its unreachable until the seam ruling; this witness does not claim it fixed.
+#
+# The refusal pen plants a call that drops the mismatch, and the witness requires that plant to fail,
+# so the refusal leg cannot pass by accident.
+#
+# Purely local: no key material leaves the process, no network, funds, or device. Run from the root:
+#   rishi/bin/rishi run tools/t/tally_kumara_refusal_witness.rish
+
+say "tally-kumara: a matched pair signs; a mismatched pair returns KeyMismatch as a value."
+
+let zig = "vendor/zig-toolchain/zig"
+let mkdir = run ["mkdir" "-p" "tally/bin"]
+assert mkdir.ok else "tally-kumara: could not create tally/bin"
+
+let build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tally/kumara_refusal_test.rye" "-femit-bin=tally/bin/tally-kumara-refusal"]
+assert build.ok else "tally-kumara: the checked-door test must build -- ${build.out_brief}"
+let pass = run ["tally/bin/tally-kumara-refusal"]
+assert pass.ok else "tally-kumara: the matched pair must sign and the mismatch must refuse as a value -- ${pass.err_brief}"
+assert pass.err contains "GREEN: kumara checked sign" else "tally-kumara: the passing side must speak its result -- ${pass.err_brief}"
+
+let pen_mk = run ["mktemp" "-d"]
+assert pen_mk.ok else "tally-kumara: could not make the refusal pen"
+let pen = trim pen_mk.out
+let plant = run ["sh" "-c" "cp tally/kumara.rye ${pen}/kumara.rye && sed 's/kumara.sign_checked(message, mismatched, null);/kumara.sign_checked(message, kp_a, null); _ = mismatched;/' tally/kumara_refusal_test.rye > ${pen}/kumara_refusal_test.rye"]
+assert plant.ok else "tally-kumara: could not plant the dropped-mismatch call"
+let red_build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "${pen}/kumara_refusal_test.rye" "-femit-bin=${pen}/tally-kumara-dropped"]
+assert red_build.ok else "tally-kumara: the dropped-mismatch plant must build -- ${red_build.out_brief}"
+let red = run ["${pen}/tally-kumara-dropped"]
+assert red.ok == false else "tally-kumara: a plant that signs the mismatch must fail the refusal leg"
+
+let clean = run ["rm" "-rf" "${pen}"]
+assert clean.ok else "tally-kumara: could not remove the refusal pen"
+
+say "GREEN: tally kumara witness -- matched pair signs; mismatched pair refused as KeyMismatch; dropped refusal reds."

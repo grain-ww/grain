@@ -1,0 +1,34 @@
+//! tally/kumara_refusal_test.rye -- the checked sign door answers both sides as a value.
+//! A matched pair signs and verifies; a pair assembled from mismatched parts returns KeyMismatch.
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const kumara = @import("kumara.rye");
+
+pub fn main() void {
+    // invariant: two distinct seeds yield two distinct keypairs, so the mismatch below is real.
+    const seed_a: [kumara.seed_length]u8 = .{0x11} ** kumara.seed_length;
+    const seed_b: [kumara.seed_length]u8 = .{0x22} ** kumara.seed_length;
+    const kp_a = kumara.keypair_from_seed(&seed_a);
+    const kp_b = kumara.keypair_from_seed(&seed_b);
+    assert(!std.mem.eql(u8, &kp_a.public_key.toBytes(), &kp_b.public_key.toBytes()));
+
+    const message = "kumara refusal witness\n";
+
+    // Passing side: the matched pair signs and the signature verifies against its own key.
+    const sig = kumara.sign_checked(message, kp_a, null) catch unreachable;
+    kumara.verify(message, sig, kp_a.public_key) catch unreachable;
+
+    // Refusal side: a pair holding kp_b's public key beside kp_a's secret key is refused by name.
+    const mismatched: kumara.KeyPair = .{ .public_key = kp_b.public_key, .secret_key = kp_a.secret_key };
+    const refused = kumara.sign_checked(message, mismatched, null);
+    // invariant: the refusal is a value the caller can match, not a process abort.
+    assert(std.meta.isError(refused));
+    if (refused) |_| {
+        assert(false); // unreachable by the assert above; a signature here would be a fault
+    } else |err| {
+        assert(err == error.KeyMismatch);
+    }
+
+    print("GREEN: kumara checked sign -- matched pair signs and verifies; mismatched pair refused as KeyMismatch\n", .{});
+}

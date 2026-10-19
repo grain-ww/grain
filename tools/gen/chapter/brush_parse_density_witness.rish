@@ -1,0 +1,21 @@
+# tools/gen/chapter/brush_parse_density_witness.rish -- Surface p24 - the invariant-density floor.
+#
+#   rishi/bin/rishi run tools/gen/chapter/brush_parse_density_witness.rish
+#
+# Holds brushstroke/brush_parse.rye at 20 or more `invariant:` markers (TAME Core: state invariants
+# before implementing). The floor itself is measured by tools/gen/chapter/brush_parse_tame_density.sh;
+# this witness does not re-count it. It runs the control, which plants 19, 20 and 25 markers in a
+# throwaway pen and then reads the live tree, and it holds the control's own verdict. A control that
+# only printed numbers would pass here, so the witness asserts the named legs, not the exit alone.
+
+say "brush-density: floor 20 invariant: markers in brushstroke/brush_parse.rye."
+
+let control = run ["sh" "tools/fixtures/b/brush_parse_density_control.sh"]
+assert control.ok else "brush-density: control run failed -- read tools/fixtures/b/brush_parse_density_control.sh"
+assert control.out contains "leg=refuses_below_floor markers=19 exit=1 verdict=as_named" else "brush-density: 19 markers not refused"
+assert control.out contains "leg=welcomes_at_floor markers=20 exit=0 verdict=as_named" else "brush-density: 20 markers not welcomed"
+assert control.out contains "leg=welcomes_above_floor markers=25 exit=0 verdict=as_named" else "brush-density: 25 markers not welcomed"
+assert control.out contains "leg=live_tree exit=0 verdict=as_named" else "brush-density: live tree below the floor"
+assert control.out contains "control_verdict=ok" else "brush-density: control verdict is not ok"
+
+say "GREEN: brush-density -- the floor refuses 19 and welcomes 20, and the live tree holds it."

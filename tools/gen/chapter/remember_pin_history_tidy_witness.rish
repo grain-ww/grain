@@ -1,0 +1,26 @@
+# tools/gen/chapter/remember_pin_history_tidy_witness.rish -- ITINERARY pin habit tidy
+#
+#   rishi/bin/rishi run tools/gen/chapter/remember_pin_history_tidy_witness.rish
+#
+# Asserts the one-shot 20260728 pin tidy's standing artifacts: its counsel seat and the two
+# remember-git-nib rule pages. The backup branch and habit counter were retired after the
+# squash ran (REDS %839); the live habit law is remember-git-nib rule 5.
+
+say "pin-tidy: Language EN — scroll history · same-commit git nib."
+say "pin-tidy: Style Radiant — measure habit follow-ups; keep real sends."
+say "pin-tidy: Lens TAME — full habit tidy 20260728.205833."
+
+let seat = run ["test" "-f" "counsel/date/20260728/20260728-205833_history-tidy-remember-pin-squash-full.md"]
+assert seat.ok else "pin-tidy: full tidy counsel seat missing"
+
+let rule_c = run ["test" "-f" ".cursor/rules/remember-git-nib.mdc"]
+assert rule_c.ok else "pin-tidy: cursor remember-git-nib rule missing"
+let rule_z = run ["test" "-f" ".claude/rules/remember-git-nib.md"]
+assert rule_z.ok else "pin-tidy: claude remember-git-nib rule missing"
+
+# invariant: the 20260728 squash is a dated event; its backup branch and counter script were retired after it ran (REDS %839).
+say "pin-tidy: the 20260728 squash ran; its backup branch and habit counter were retired (REDS %839)."
+say "pin-tidy: the standing rule the habit guard reads is remember-git-nib rule 5, not a counter."
+
+say "GREEN: pin-tidy — counsel seat · rules present · squash retired as history"
+say "GREEN: pin-tidy — ITINERARY git nib rides in the work commit."

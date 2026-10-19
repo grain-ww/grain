@@ -1,0 +1,29 @@
+# tools/b/build_cached_witness.rish -- the build-cache consumer proves its own control, on metal.
+#
+# WHY THIS RUNG. tools/b/build_cached.sh reuses a compiled binary on an identical content key, and
+# its 24-leg control is what shows the reuse refuses every planted change. The control existed as a
+# shell script run by hand, so nothing in the Rishi runner held its count. A control nobody runs
+# proves nothing the next morning, and a leg count nobody pins can silently shrink.
+#
+# WHAT IS PROVEN, on metal.
+#   The control runs against real compiles through the vendored zig and reports all 24 legs.
+#   Zero legs fail, and the control agrees with itself through control_verdict=ok.
+#
+# WHAT IS NOT PROVEN. The hot endurance run, the scan fixture the claim named, and the roster row
+# that would put this witness on a cadence. Those are owed and named in the session log, not
+# claimed here. This rung reads the control's own numbers and nothing else.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/build_cached_witness.rish
+
+say "build-cached: Language EN -- a consumer that reuses a binary is only as safe as the control that shows it refuses every changed input. This runs that control and reads its count."
+say "build-cached: Style Radiant -- forty legs, each planted change met by a miss, and a relative store that still proves its binary, and the count pinned so a shrinking control cannot pass quietly."
+say "build-cached: Lens TAME -- bound every claim, and let the control's own fields answer rather than a remembered number."
+
+let control = run ["sh" "tools/fixtures/b/build_cached_control.sh"]
+say control.out
+assert control.ok else "build-cached: the control must complete with every leg answering"
+assert control.out contains "control_legs=40" else "build-cached: the control must run exactly forty legs"
+assert control.out contains "control_failed=0" else "build-cached: no control leg may fail"
+assert control.out contains "control_verdict=ok" else "build-cached: the control must agree with itself"
+say "GREEN: build-cached -- a reused binary is refused when any declared input changes, and every owed leg answers."

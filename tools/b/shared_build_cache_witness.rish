@@ -1,0 +1,40 @@
+# tools/b/shared_build_cache_witness.rish -- the shared build cache's mutation census, held on a wall.
+#
+# WHY THIS RUNG. The census `tools/fixtures/b/shared_build_cache_mutation_census.sh` already runs
+# and prints a verdict, but nothing reads that verdict. A census nobody reads is a claim nobody can
+# fail, which is the same shape REDS %568 named one room over: a reading nobody acts on is half a
+# guard. This witness is the reader. It takes the census's own fields and asserts them, so a
+# silent-reuse regression reds the lap it lands rather than the next time a hand looks.
+#
+# WHAT IS PROVEN, on metal. Three declared inputs -- source, flag, and overlay -- each change the
+# emitted binary. The executable bit is measured at the receipt key, which folds the mode in: a
+# chmod moves the key while zig leaves the binary identical, which is correct for zig and is why
+# the key must own the mode. The census counts zero silent reuses across the four. The census runs
+# a private global cache, so a peer's concurrent writes cannot answer for this reading.
+#
+# WHAT IS NOT PROVEN, and the census says so itself. The compiler and toolchain pins are unmeasured
+# because this pier vendors one toolchain. This witness pins those two unmeasured reasons by name,
+# so the gap stays visible instead of turning green by omission. First proof: six mutations, four
+# measured, two owed.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/shared_build_cache_witness.rish
+
+say "shared-build-cache: Language EN -- identical inputs may reuse a binary only if every changed input reaches the output."
+say "shared-build-cache: Style Gauge at Meter -- the census's fields are asserted, and the three unmeasured inputs keep their reasons."
+say "shared-build-cache: Lens TAME -- safety first: a silent reuse is a red, not a warning."
+
+let census = run ["sh" "tools/fixtures/b/shared_build_cache_mutation_census.sh"]
+say census.out
+assert census.ok else "shared-build-cache: the census must complete with every measured input answering"
+assert census.out contains "baseline=built" else "shared-build-cache: the census must build its baseline"
+assert census.out contains "mutation=source result=changed binary=differs" else "shared-build-cache: a source change must reach the binary"
+assert census.out contains "mutation=flag result=changed binary=differs" else "shared-build-cache: a flag change must reach the binary"
+assert census.out contains "mutation=overlay result=changed binary=differs" else "shared-build-cache: an overlay change must reach the binary"
+assert census.out contains "silent_reuse=0" else "shared-build-cache: no measured input may leave its layer unchanged"
+assert census.out contains "changed=4" else "shared-build-cache: exactly four inputs are measured as changed"
+assert census.out contains "mutation=executable_bit result=changed layer=receipt_key key=moved binary=identical_at_zig" else "shared-build-cache: the executable bit must move the receipt key while Zig leaves the binary identical"
+assert census.out contains "mutation=compiler_pin result=unmeasured reason=one_vendored_toolchain_on_this_pier" else "shared-build-cache: the compiler pin must stay unmeasured by name"
+assert census.out contains "mutation=toolchain_pin result=unmeasured reason=one_vendored_toolchain_on_this_pier" else "shared-build-cache: the toolchain pin must stay unmeasured by name"
+assert census.out contains "verdict=every_measured_mutation_moves_its_layer unmeasured=2" else "shared-build-cache: the census verdict must read every measured mutation moved its layer, two unmeasured"
+say "GREEN: shared-build-cache -- four measured inputs move their layer with zero silent reuse; two owed inputs stay named."

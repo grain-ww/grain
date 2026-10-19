@@ -1,0 +1,119 @@
+# tools/g/glow_shape_capacity_witness.rish -- Glow's shape ceiling holds the receipt contract's
+# widest public type, and the next field still refuses.
+#
+# WHY THIS RUNG. This seat's own ladder rung on construction/ITINERARY.md reads *express the
+# receipt facts and Tally bounds in the smallest Glow form already owned*. The smallest form Glow
+# owns for a record is the multi-field `$:` shape, and it holds at most `max_fields` faces --
+# FIFTEEN, declared in glow/rune_shape.rye. The receipt contract the maintainer accepted on `20260913`
+# declares `ReceiptOfferFact` with FIFTEEN fields and `LinengrowReceipt` with ELEVEN. The widened
+# ceiling now admits both through the existing shape path.
+#
+# WHERE THE NINE CAME FROM, read rather than guessed. It was the elder seated capacity freeze
+# (active-designing/date/20260720/20260720-231857_closed-field-capacity-freeze-and-framework-next.md,
+# and the row in context/TAME_GUIDANCE.md that records it), and its stated reason was sound on the
+# day it was written: the ladder had walked pair, triple, quad, penta, hexa, hepta, octa, nona.
+# Each rung repeated the same nest law. The freeze reserved later faces for a dedicated capacity
+# pin, leaving a clear door for the receipt contract.
+#
+# WHAT THIS RUNG NOW DOES. The dedicated capacity ruling widened the existing shape path to
+# fifteen fields and kept the sixteenth refusal. The witness continues to measure both the live
+# contract and planted refusals, so the decision has arithmetic in front of it.
+#
+# WHAT IS GATED, and why each. The INSTRUMENT is gated; the GAP is reported. Both halves must be
+# read from their own files -- the ceiling out of the Glow source, the types out of the contract's
+# own `## Public types` block -- and at least one type must parse. A zero-type parse produces a
+# refusal, since `types_over_capacity=0` could otherwise describe an unread page. The
+# gap itself is reported: changing a language ceiling takes a ruling. The fleet can read the gap
+# while that decision remains with its owner. This follows the
+# published-double reading takes in .claude/rules/derived-spine.md, and for the same reason.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/g/glow_shape_capacity_control.sh -- 44 behaviors on
+# planted files in a throwaway pen, every refusal shown from both sides:
+#
+#   THE FIELD COUNT, whose tempting line count understates a wrapped type:
+#     fifteen fields across three lines read as THREE to a line counter. That false reading
+#     calls an over-capacity type expressible. The mutation is planted and bites.
+#   THE TWO FIELD FORMS the contract actually writes -- a comma-separated list, and a `name: Type`
+#     line whose type may itself carry a comma. The pen found this one: the first draft split on
+#     commas before trimming the colon, so `offer: map<a, b>` read as two fields. Both directions
+#     are now legs.
+#   THE BOUNDARY, proven on a type sitting at exactly nine: an at-or-over check would refuse
+#     a shape Glow holds.
+#   THE CAPACITY IS READ FROM THE FILE, proven by raising the planted ceiling to sixteen and
+#     watching every type become expressible and the verdict follow.
+#   FIVE REFUSALS, each planted and then lifted -- an absent Glow source, a renamed ceiling, an
+#     absent contract, a page carrying no Public types block, and a block parsing to no type.
+#   AND THE LIVE LEG reads the real tree beside the planted pen.
+#
+# AURA REVIEW belongs to the hand reading field types; the contract names fields alone. Read on
+# `20260916`: all fifteen of ReceiptOfferFact's fields map onto the four admitted auras, with
+# `value_amount` needing `@u64` because the contract's ceiling of 9,000,000,000 stands above what
+# `@u32` holds, and `product_digest` fitting `@ux` exactly at its 32 bytes. The capacity gap is
+# closed today.
+#
+# Style: context/GAUGE_STYLE.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/g/glow_shape_capacity_witness.rish
+
+say "glow-shape-capacity: Language EN -- a ceiling is a claim, and this one is measured."
+say "glow-shape-capacity: Style Gauge, Meter -- the gap is counted, never adjudicated."
+say "glow-shape-capacity: Lens TAME -- refuse a partial read; prove each branch from both sides."
+
+let control = run ["sh" "tools/fixtures/g/glow_shape_capacity_control.sh"]
+say control.out
+assert control.ok else "glow-shape-capacity: the control must complete -- its own lines are printed above"
+
+assert control.out contains "control_expected=44" else "glow-shape-capacity: the control counts its own legs, so a shrunken pen cannot read as a full one"
+assert control.out contains "control_legs=44" else "glow-shape-capacity: a leg added or lost is a leg nobody heard"
+assert control.out contains "control_failed=0" else "glow-shape-capacity: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "glow-shape-capacity: the control must balance before it is believed"
+
+# The field count, proven in both the forms the contract writes and against the reading that flatters.
+assert control.out contains "a wrapped type counts every comma-separated field" else "glow-shape-capacity: a type wrapped across lines must count its fields"
+assert control.out contains "a colon form counts one field per line" else "glow-shape-capacity: a name-colon-type line is one field"
+assert control.out contains "a field whose type carries a comma still counts once" else "glow-shape-capacity: a comma inside a field type must not become a field"
+assert control.out contains "and splitting a colon line on commas first bites" else "glow-shape-capacity: the order of the two forms must be proven"
+assert control.out contains "the line-counting mutation bites" else "glow-shape-capacity: counting lines rather than fields must bite"
+assert control.out contains "the boundary mutation bites on the type sitting exactly at capacity" else "glow-shape-capacity: at-or-over must be told from over"
+
+# The capacity follows its file rather than a copy carried here.
+assert control.out contains "a raised capacity is read from the file" else "glow-shape-capacity: the ceiling must be read, never spelled"
+assert control.out contains "nothing stands over at sixteen" else "glow-shape-capacity: a wide enough capacity must read clean"
+assert control.out contains "the verdict follows" else "glow-shape-capacity: the verdict must follow the capacity"
+
+# Five refusals, each planted and then lifted, because a refusal shown once cannot be told from an
+# instrument that always refuses.
+assert control.out contains "an absent Glow source refuses" else "glow-shape-capacity: a missing ceiling source must refuse"
+assert control.out contains "a renamed ceiling refuses" else "glow-shape-capacity: a renamed constant must refuse rather than guess"
+assert control.out contains "an absent contract refuses" else "glow-shape-capacity: a missing contract must refuse"
+assert control.out contains "a missing block refuses" else "glow-shape-capacity: a page with no Public types block must refuse"
+assert control.out contains "a block with no type name refuses" else "glow-shape-capacity: parsing zero types must refuse rather than pass clean"
+assert control.out contains "and the refusal lifts when the heading returns" else "glow-shape-capacity: every refusal must lift when its cause does"
+
+assert control.out contains "the tree's contract parses to at least one type" else "glow-shape-capacity: the live leg must read the real tree"
+
+let scan = run ["sh" "tools/fixtures/g/glow_shape_capacity_scan.sh"]
+say scan.out
+assert scan.ok else "glow-shape-capacity: the reading must complete"
+
+# THE GATE: the instrument answered. Both halves read from their own files, and the contract's
+# block parsed to the four types it declares. A reader that silently parsed none would print a
+# flawless zero about a page it never opened.
+assert scan.out contains "glow_readable=yes" else "glow-shape-capacity: the Glow shape source must stand where the reading expects it"
+assert scan.out contains "capacity_found=yes" else "glow-shape-capacity: the ceiling must be found rather than assumed"
+assert scan.out contains "contract_readable=yes" else "glow-shape-capacity: the contract must stand where the reading expects it"
+assert scan.out contains "types_block_found=yes" else "glow-shape-capacity: the Public types block must be found"
+assert scan.out contains "types_read=4" else "glow-shape-capacity: the contract declares four public types"
+
+# THE READING, reported rather than walled. These four lines are the arithmetic the capacity
+# decision deserves in front of it, and every one of them moves the day either side moves: the
+# ceiling when a capacity pin opens, the counts when the contract grows a type.
+assert scan.out contains "shape_max_fields=15" else "glow-shape-capacity: the live capacity reads fifteen today"
+assert scan.out contains "widest_type=ReceiptOfferFact" else "glow-shape-capacity: the widest public type is the receipt offer fact"
+assert scan.out contains "widest_type_fields=15" else "glow-shape-capacity: the receipt offer fact names fifteen fields"
+assert scan.out contains "types_over_capacity=0" else "glow-shape-capacity: all four public types fit the live capacity"
+assert scan.out contains "capacity_gap=0" else "glow-shape-capacity: the capacity gap is closed"
+
+say "glow-shape-capacity: GREEN -- capacity 15, widest public type 15, all four expressible."
+say "glow-shape-capacity: the measured gap is closed; the next field remains the refusal boundary."
